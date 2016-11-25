@@ -431,7 +431,7 @@ class ReplyKeyboardMarkup(object):
 
     def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
         data = {
-            'hide_keyboard': hide_keyboard,
+            'keyboard': keyboard,
         }
         if resize_keyboard is not None:
             data['resize_keyboard'] = resize_keyboard
@@ -445,11 +445,29 @@ class ReplyKeyboardMarkup(object):
         return json.dumps(self._data)
 
 
-class ReplyKeyboardHide(object):
+class KeyboardButton(object):
 
-    def __init__(self, hide_keyboard, selective=None):
+    def __init__(self, text, request_contact=None, request_location=None):
         data = {
-            'hide_keyboard': hide_keyboard,
+            'text': text
+        }
+
+        if request_contact is not None:
+            data['request_contact'] = True
+        if request_location is not None:
+            data['request_location'] = True
+
+        self._data = data
+
+    def __str__(self):
+        return json.dumps(self._data)
+
+
+class ReplyKeyboardRemove(object):
+
+    def __init__(self, remove_keyboard, selective=None):
+        data = {
+            'remove_keyboard': remove_keyboard,
         }
         if selective is not None:
             data['selective'] = selective
