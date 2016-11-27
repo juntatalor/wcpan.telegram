@@ -431,7 +431,7 @@ class ReplyKeyboardMarkup(object):
 
     def __init__(self, keyboard, resize_keyboard=None, one_time_keyboard=None, selective=None):
         data = {
-            'keyboard': keyboard,
+            'keyboard': str(keyboard),
         }
         if resize_keyboard is not None:
             data['resize_keyboard'] = resize_keyboard
@@ -460,6 +460,9 @@ class KeyboardButton(object):
         self._data = data
 
     def __str__(self):
+        return json.dumps(self._data)
+
+    def __repr__(self):
         return json.dumps(self._data)
 
 
