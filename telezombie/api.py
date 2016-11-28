@@ -4,14 +4,12 @@ import json
 
 from tornado import gen, httpclient, web, httputil
 
-from . import settings, types, util
-
+from . import types, util
 
 _API_TEMPLATE = 'https://api.telegram.org/bot{api_token}/{api_method}'
 
 
 class TeleZombie(object):
-
     def __init__(self, api_token):
         self._api_token = api_token
         if not self._api_token:
@@ -310,7 +308,6 @@ class TeleZombie(object):
 
 
 class _DispatcherMixin(object):
-
     def __init__(self, *args, **kwargs):
         super(_DispatcherMixin, self).__init__()
 
@@ -415,7 +412,6 @@ class _DispatcherMixin(object):
 
 
 class TeleLich(_DispatcherMixin):
-
     def __init__(self, api_token):
         self._api = TeleZombie(api_token)
 
@@ -440,8 +436,30 @@ class TeleLich(_DispatcherMixin):
         raise gen.Return((yield self._api.get_me()))
 
     @gen.coroutine
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
+        raise gen.Return((yield self._api.answer_callback_query(callback_query_id, text, show_alert, url, cache_time)))
+
+    @gen.coroutine
+    def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
+                          disable_web_page_preview=None, reply_markup=None):
+        raise gen.Return((yield self._api.edit_message_text(text, chat_id, message_id, inline_message_id, parse_mode,
+                                                            disable_web_page_preview, reply_markup)))
+
+    @gen.coroutine
+    def edit_message_caption(self, caption, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        raise gen.Return((yield self._api.edit_message_caption(caption, chat_id, message_id, inline_message_id,
+                                                               reply_markup)))
+
+    @gen.coroutine
+    def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None,
+                                  reply_markup=None):
+        raise gen.Return((yield self._api.edit_message_reply_markup(chat_id, message_id, inline_message_id,
+                                                                    reply_markup)))
+
+    @gen.coroutine
     def send_message(self, chat_id, text, disable_web_page_preview=None, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup)))
+        raise gen.Return(
+            (yield self._api.send_message(chat_id, text, disable_web_page_preview, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def forward_message(self, chat_id, from_chat_id, message_id):
@@ -469,7 +487,8 @@ class TeleLich(_DispatcherMixin):
 
     @gen.coroutine
     def send_location(self, chat_id, latitude, longitude, reply_to_message_id=None, reply_markup=None):
-        raise gen.Return((yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup)))
+        raise gen.Return(
+            (yield self._api.send_location(chat_id, latitude, longitude, reply_to_message_id, reply_markup)))
 
     @gen.coroutine
     def send_chat_action(self, chat_id, action):
@@ -518,7 +537,6 @@ class TeleLich(_DispatcherMixin):
 
 
 class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
-
     @gen.coroutine
     def post(self):
         data = self.request.body
@@ -533,7 +551,6 @@ class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
 
 
 class TeleError(Exception):
-
     def __init__(self, description):
         self.description = description
 
