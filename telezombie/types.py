@@ -476,8 +476,8 @@ class InlineKeyboardButton(object):
             data['callback_game'] = callback_game
         self._data = data
 
-        def __str__(self):
-            return json.dumps(self._data)
+    def __str__(self):
+        return json.dumps(self._data)
 
 
 class KeyboardButton(object):
