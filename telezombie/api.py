@@ -62,6 +62,78 @@ class TeleZombie(object):
         raise gen.Return(types.Message(data))
 
     @gen.coroutine
+    def answer_callback_query(self, callback_query_id, text=None, show_alert=None, url=None, cache_time=None):
+        args = {
+            'callback_query_id': callback_query_id
+        }
+        if text is not None:
+            args['text'] = text
+        if show_alert is not None:
+            args['show_alert'] = show_alert
+        if url is not None:
+            args['url'] = url
+        if cache_time is not None:
+            args['cache_time'] = cache_time
+
+        data = yield self._get('answerCallbackQuery', args)
+        raise gen.Return(data)
+
+    @gen.coroutine
+    def edit_message_text(self, text, chat_id=None, message_id=None, inline_message_id=None, parse_mode=None,
+                          disable_web_page_preview=None, reply_markup=None):
+        args = {
+            'text': text
+        }
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+        if parse_mode is not None:
+            args['parse_mode'] = parse_mode
+        if disable_web_page_preview is not None:
+            args['disable_web_page_preview'] = disable_web_page_preview
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = yield self._get('editMessageText', args)
+        raise gen.Return(data)
+
+    @gen.coroutine
+    def edit_message_caption(self, caption, chat_id=None, message_id=None, inline_message_id=None, reply_markup=None):
+        args = {
+            'caption': caption
+        }
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = yield self._get('editMessageCaption', args)
+        raise gen.Return(data)
+
+    @gen.coroutine
+    def edit_message_reply_markup(self, chat_id=None, message_id=None, inline_message_id=None,
+                                  reply_markup=None):
+        args = {}
+        if chat_id is not None:
+            args['chat_id'] = chat_id
+        if message_id is not None:
+            args['message_id'] = message_id
+        if inline_message_id is not None:
+            args['inline_message_id'] = inline_message_id
+        if reply_markup is not None:
+            args['reply_markup'] = reply_markup
+
+        data = yield self._get('editMessageReplyMarkup', args)
+        raise gen.Return(data)
+
+    @gen.coroutine
     def forward_message(self, chat_id, from_chat_id, message_id):
         args = {
             'chat_id': chat_id,
