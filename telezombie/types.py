@@ -445,6 +445,41 @@ class ReplyKeyboardMarkup(object):
         return json.dumps(self._data)
 
 
+class InlineKeyboardMarkup(object):
+
+    def __init__(self, inline_keyboard):
+        data = {
+            'inline_keyboard': inline_keyboard
+        }
+        self._data = data
+
+    def __str__(self):
+        return json.dumps(self._data)
+
+
+class InlineKeyboardButton(object):
+
+    def __init__(self, text, url=None, callback_data=None, switch_inline_query=None,
+                 switch_inline_query_current_chat=None, callback_game=None):
+        data = {
+            'text': text
+        }
+        if url is not None:
+            data['url'] = url
+        if callback_data is not None:
+            data['callback_data'] = callback_data
+        if switch_inline_query is not None:
+            data['switch_inline_query'] = switch_inline_query
+        if switch_inline_query_current_chat is not None:
+            data['switch_inline_query_current_chat'] = switch_inline_query_current_chat
+        if callback_game is not None:
+            data['callback_game'] = callback_game
+        self._data = data
+
+        def __str__(self):
+            return json.dumps(self._data)
+
+
 class KeyboardButton(object):
 
     def __init__(self, text, request_contact=None, request_location=None):
