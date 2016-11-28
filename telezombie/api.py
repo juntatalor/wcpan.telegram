@@ -299,6 +299,10 @@ class _DispatcherMixin(object):
         pass
 
     @gen.coroutine
+    def on_callback(self, callback):
+        pass
+
+    @gen.coroutine
     def _receive_message(self, message):
         if message.text is not None:
             yield self.on_text(message)
@@ -332,6 +336,10 @@ class _DispatcherMixin(object):
             pass
         else:
             raise TeleError('unknown message type')
+
+    @gen.coroutine
+    def _receive_callback(self, callback):
+        yield self.on_callback(callback)
 
 
 class TeleLich(_DispatcherMixin):
@@ -444,10 +452,12 @@ class TeleHookHandler(web.RequestHandler, _DispatcherMixin):
         data = self.request.body
         data = data.decode('utf-8')
         data = json.loads(data)
-        if 'message' not in data:
-            return
-        update = types.Update(data)
-        yield self._receive_message(update.message)
+        if 'message' in data:
+            update = types.Update(data)
+            yield self._receive_message(update.message)
+        elif 'callback_query' in data:
+            callback = types.CallbackQuery(data['callback_query'])
+            yield self._receive_callback(callback)
 
 
 class TeleError(Exception):

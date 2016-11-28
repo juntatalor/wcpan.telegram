@@ -409,6 +409,24 @@ class Update(object):
         return self._message
 
 
+class CallbackQuery(object):
+
+    def __init__(self, data):
+        self._data = data
+        self._message = Message(data['message'])
+
+    def __str__(self):
+        return json.dumps(self._data)
+
+    @property
+    def id_(self):
+        return self._data['id']
+
+    @property
+    def message(self):
+        return self._message
+
+
 class UserProfilePhotos(object):
 
     def __init__(self, data):
