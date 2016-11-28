@@ -414,6 +414,7 @@ class CallbackQuery(object):
     def __init__(self, data):
         self._data = data
         self._message = Message(data['message'])
+        self._from = User(data['from'])
 
     def __str__(self):
         return json.dumps(self._data)
@@ -425,6 +426,10 @@ class CallbackQuery(object):
     @property
     def message(self):
         return self._message
+
+    @property
+    def from_(self):
+        return self._from
 
 
 class UserProfilePhotos(object):
